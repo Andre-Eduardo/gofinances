@@ -32,7 +32,6 @@ export function Dashboard() {
 
       </Header>
       <HighlightCards
-
       >
         <HighlightCard />
         <HighlightCard />
