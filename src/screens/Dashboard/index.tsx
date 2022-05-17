@@ -7,25 +7,30 @@ import {
   Photo,
   User,
   UserGreeting,
-  UserName
+  UserName,
+  Icon
 } from './styles';
 
 export function Dashboard() {
   return (
     <Container>
-      <UserWrapper></UserWrapper>
+
       <Header>
-        <UserInfo>
-          <Photo source={{
-            uri: 'http://github.com/Andre-Eduardo.png'
-          }} />
-          < User >
-            <UserGreeting>Olá</UserGreeting>
-            <UserName> André</UserName>
-          </User>
-        </UserInfo>
-      </UserWrapper>
-    </Header>
+        <UserWrapper>
+          <UserInfo>
+            <Photo source={{
+              uri: 'http://github.com/Andre-Eduardo.png'
+            }} />
+            < User >
+              <UserGreeting>Olá</UserGreeting>
+              <UserName> André</UserName>
+            </User>
+          </UserInfo>
+          <Icon name='power' />
+        </UserWrapper>
+
+      </Header>
+
     </Container >
   )
 }
