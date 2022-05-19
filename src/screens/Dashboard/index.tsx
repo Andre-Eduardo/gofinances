@@ -20,6 +20,7 @@ import {
 
 export function Dashboard() {
   const data = [{
+    type: 'positive',
     title: 'Desenvolvimento de site',
     amount: 'R$ 12.000,00',
     category: {
@@ -29,15 +30,17 @@ export function Dashboard() {
     date: '13/04/2022'
   },
   {
+    type: 'negative',
     title: 'Desenvolvimento de site',
     amount: 'R$ 12.000,00',
     category: {
       name: 'Vendas',
-      icon: 'dollar-sign',
+      icon: 'coffee',
     },
     date: '13/04/2022'
   },
   {
+    type: 'negative',
     title: 'Desenvolvimento de site',
     amount: 'R$ 12.000,00',
     category: {
