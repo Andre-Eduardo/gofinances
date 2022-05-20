@@ -12,6 +12,7 @@ import {
 import theme from './src/global/styles/theme'
 import { Register } from './src/screens/Register';
 import { CategorySelect } from './src/screens/CategorySelect';
+import { StatusBar } from 'expo-status-bar';
 
 
 export default function App() {
@@ -27,7 +28,8 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <CategorySelect />
+      <StatusBar style='light' />
+      <Register />
     </ThemeProvider>
   );
 }
