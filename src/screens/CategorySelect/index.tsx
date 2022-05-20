@@ -1,6 +1,7 @@
 import React from 'react';
 import { FlatList } from 'react-native-gesture-handler';
 
+import { Button } from '../../components/Form/Button'
 import { categories } from '../../utils/categories';
 import {
   Container,
@@ -11,8 +12,7 @@ import {
   Name,
   Separator,
   Footer,
-  Button,
-  ButtonText,
+
 
 } from './styles';
 
@@ -39,7 +39,7 @@ export function CategorySelect({
 
       <FlatList
         data={categories}
-        style={{ flex: 1, width: 100 }}
+        style={{ flex: 1, width: '100%' }}
         keyExtractor={(item) => item.key}
         renderItem={({ item }) => (
           <Category>
@@ -50,9 +50,9 @@ export function CategorySelect({
         ItemSeparatorComponent={() => <Separator />}
       />
       <Footer>
-        <Button>
-          <ButtonText>Selecionar</ButtonText>
-        </Button>
+        <Button title="Selecionar" />
+
+
       </Footer>
     </Container>
   )
