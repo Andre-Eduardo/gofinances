@@ -1,7 +1,8 @@
 import 'react-native-gesture-handler'
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
-import { Dashboard } from './src/screens/Dashboard';
+
+import { NavigationContainer } from '@react-navigation/native'
 
 import AppLoading from 'expo-app-loading'
 import {
@@ -11,9 +12,8 @@ import {
   Poppins_700Bold
 } from '@expo-google-fonts/poppins'
 import theme from './src/global/styles/theme'
-import { Register } from './src/screens/Register';
-import { CategorySelect } from './src/screens/CategorySelect';
 import { StatusBar } from 'expo-status-bar';
+import { AppRoutes } from './src/routes/app.routes';
 
 
 export default function App() {
@@ -30,7 +30,9 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <StatusBar style='light' />
-      <Register />
+      <NavigationContainer>
+        <AppRoutes />
+      </NavigationContainer>
     </ThemeProvider>
   );
 }
