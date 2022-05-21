@@ -18,9 +18,12 @@ import {
   Transactions,
   Title,
   TransactionList,
-  LogoutButton
+  LogoutButton,
+  LoadContainer
 } from './styles';
 import { useFocusEffect } from '@react-navigation/native';
+import { ActivityIndicator } from 'react-native';
+import { useTheme } from 'styled-components';
 
 export interface DataListProps extends TransactionCardProps {
   id: string;
@@ -36,9 +39,11 @@ interface HighlightData {
 }
 
 export function Dashboard() {
-
+  const [isLoading, setIsLoading] = useState(true)
   const [transactions, setTransactions] = useState<DataListProps[]>([])
   const [highlightData, setHighlightData] = useState<HighlightData>({} as HighlightData)
+
+  const theme = useTheme()
 
   async function loadTransaction() {
     const dataKey = '@gofinances:transactions';
@@ -98,7 +103,8 @@ export function Dashboard() {
         })
       }
     })
-    console.log(response)
+
+    setIsLoading(false)
   }
   useEffect(() => {
     loadTransaction();
@@ -111,56 +117,63 @@ export function Dashboard() {
 
   return (
     <Container>
-      <Header>
-        <UserWrapper>
-          <UserInfo>
-            <Photo source={{
-              uri: 'http://github.com/Andre-Eduardo.png'
-            }} />
-            < User >
-              <UserGreeting>Olá</UserGreeting>
-              <UserName> André</UserName>
-            </User>
-          </UserInfo>
-          <LogoutButton>
-            <Icon name='power' />
-          </LogoutButton>
-        </UserWrapper>
 
-      </Header>
-      <HighlightCards >
-        <HighlightCard
-          type='up'
-          title='Entradas'
-          amount={highlightData.entries.amount}
-          lastTransaction='Última entrada dia 13 de abril'
-        />
-        <HighlightCard
-          type='down'
-          title='Saídas'
-          amount={highlightData.expensive.amount}
-          lastTransaction='Última entrada dia 13 de abril'
-        />
-        <HighlightCard
-          type='total'
-          title='Total'
-          amount={highlightData.total.amount}
-          lastTransaction='Última entrada dia 13 de abril'
-        />
-      </HighlightCards>
+      {isLoading ?
+        <LoadContainer>
+          <ActivityIndicator color={theme.colors.primary} size='large' />
+        </LoadContainer> :
+        <>
+          <Header>
+            <UserWrapper>
+              <UserInfo>
+                <Photo source={{
+                  uri: 'http://github.com/Andre-Eduardo.png'
+                }} />
+                < User >
+                  <UserGreeting>Olá</UserGreeting>
+                  <UserName> André</UserName>
+                </User>
+              </UserInfo>
+              <LogoutButton>
+                <Icon name='power' />
+              </LogoutButton>
+            </UserWrapper>
 
-      <Transactions>
-        <Title>Listagem</Title>
-        <TransactionList
-          data={transactions}
-          keyExtractor={item => item.id}
-          renderItem={({ item }) => <TransactionCard data={item} />}
+          </Header>
+          <HighlightCards >
+            <HighlightCard
+              type='up'
+              title='Entradas'
+              amount={highlightData.entries.amount}
+              lastTransaction='Última entrada dia 13 de abril'
+            />
+            <HighlightCard
+              type='down'
+              title='Saídas'
+              amount={highlightData.expensive.amount}
+              lastTransaction='Última entrada dia 13 de abril'
+            />
+            <HighlightCard
+              type='total'
+              title='Total'
+              amount={highlightData.total.amount}
+              lastTransaction='Última entrada dia 13 de abril'
+            />
+          </HighlightCards>
+
+          <Transactions>
+            <Title>Listagem</Title>
+            <TransactionList
+              data={transactions}
+              keyExtractor={item => item.id}
+              renderItem={({ item }) => <TransactionCard data={item} />}
 
 
-        />
+            />
 
-      </Transactions>
-
+          </Transactions>
+        </>
+      }
     </Container >
   )
 }
