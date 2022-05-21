@@ -7,6 +7,7 @@ import { CategorySelectButton } from '../../components/Form/CategorySelectButton
 import { Button } from '../../components/Form/Button'
 import { TransactionTypeButton } from '../../components/Form/TransactionTypeButton'
 import { CategorySelect } from '../CategorySelect'
+import uuid from 'react-native-uuid'
 
 import {
   Container,
@@ -18,6 +19,7 @@ import {
 } from './styles'
 import { InputForm } from '../../components/Form/InputForm'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useNavigation } from '@react-navigation/native'
 
 interface FormData {
   name: string;
@@ -41,9 +43,11 @@ export function Register() {
     name: 'Categoria'
   })
 
-  const { control, handleSubmit, formState: { errors } } = useForm({
+  const { control, handleSubmit, formState: { errors }, reset } = useForm({
     resolver: yupResolver(schema)
   });
+
+  const navigation = useNavigation()
 
   const dataKey = '@gofinances:transactions';
   function handleTransactionsTypesSelect(type: 'up' | 'down') {
@@ -68,10 +72,12 @@ export function Register() {
     }
 
     const newTransaction = {
+      id: String(uuid.v4()),
       name: form.name,
       amount: form.amount,
       transactionsType,
-      category: category.key
+      category: category.key,
+      date: new Date()
     }
 
     try {
@@ -83,18 +89,19 @@ export function Register() {
         newTransaction
       ]
       await AsyncStorage.setItem(dataKey, JSON.stringify(dataFormatted))
+      reset()
+      setTransactionType('');
+      setCategory({
+        key: 'category',
+        name: 'Categoria'
+      });
+      navigation.navigate('Listagem')
     } catch (error) {
       console.log(error);
       Alert.alert('Nao foi possível salvar');
     }
   }
-  useEffect(() => {
-    async function loadData() {
-      const data = await AsyncStorage.getItem(dataKey)
-      console.log(JSON.parse(data))
-    }
-    loadData();
-  }, [])
+
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
