@@ -67,7 +67,7 @@ export function Register() {
       return Alert.alert('Selecione a categoria')
     }
 
-    const data = {
+    const newTransaction = {
       name: form.name,
       amount: form.amount,
       transactionsType,
@@ -75,8 +75,14 @@ export function Register() {
     }
 
     try {
+      const data = await AsyncStorage.getItem(dataKey)
+      const currentData = data ? JSON.parse(data) : []
 
-      await AsyncStorage.setItem(dataKey, JSON.stringify(data))
+      const dataFormatted = [
+        ...currentData,
+        newTransaction
+      ]
+      await AsyncStorage.setItem(dataKey, JSON.stringify(dataFormatted))
     } catch (error) {
       console.log(error);
       Alert.alert('Nao foi possível salvar');
