@@ -50,6 +50,7 @@ export function Register() {
   const navigation = useNavigation()
 
   const dataKey = '@gofinances:transactions';
+
   function handleTransactionsTypesSelect(type: 'up' | 'down') {
     setTransactionType(type)
   }
