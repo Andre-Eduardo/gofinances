@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { HistoryCard } from "../../components/HistoryCard";
 import { categories } from "../../utils/categories";
 import { VictoryPie } from 'victory-native'
@@ -18,7 +18,8 @@ import {
 import { RFValue } from "react-native-responsive-fontsize";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { addMonths, subMonths, format } from "date-fns";
-import { ptBr } from 'date-fns/locale'
+import { ptBR } from 'date-fns/locale'
+import { useFocusEffect } from "@react-navigation/native";
 interface TransactionData {
 
   type: 'positive' | 'negative'
@@ -39,10 +40,13 @@ interface CategoryData {
 }
 
 export function Resume() {
+  const [isLoading, setIsLoading] = useState(false)
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [totalByCategories, setTotalByCategories] = useState<CategoryData[]>([])
   const theme = useTheme();
+
   async function loadData() {
+    setIsLoading(true)
     const dataKey = '@gofinances:transactions';
     const response = await AsyncStorage.getItem(dataKey)
     const responseFormatted = response ? JSON.parse(response) : []
@@ -89,6 +93,7 @@ export function Resume() {
       }
     })
     setTotalByCategories(totalByCategory)
+    setIsLoading(false)
   }
 
   function handleDateChange(action: 'next' | 'prev') {
@@ -99,9 +104,11 @@ export function Resume() {
     }
   }
 
-  useEffect(() => {
+
+  useFocusEffect(useCallback(() => {
     loadData()
-  }, [selectedDate])
+  }, [selectedDate]))
+
   return (
     <Container>
       <Header>
@@ -121,7 +128,7 @@ export function Resume() {
           </MonthSelectorButton>
 
           <Month>
-            {format(selectedDate, 'MMMM, yyyy', { locale: ptBr })}
+            {format(selectedDate, 'MMMM, yyyy', { locale: ptBR })}
           </Month>
 
           <MonthSelectorButton onPress={() => handleDateChange('next')}>
