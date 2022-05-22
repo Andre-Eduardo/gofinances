@@ -2,11 +2,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useState } from "react";
 import { HistoryCard } from "../../components/HistoryCard";
 import { categories } from "../../utils/categories";
+import { VictoryPie } from 'victory-native'
 import {
   Container,
   Header,
   Title,
   Content,
+  ChartContainer
 } from "./styles";
 
 interface TransactionData {
@@ -21,7 +23,8 @@ interface TransactionData {
 interface CategoryData {
   key: string;
   name: string;
-  total: string;
+  total: number;
+  totalFormatted: string;
   color: string,
   percentFormatted: string;
   percent: number;
@@ -29,7 +32,7 @@ interface CategoryData {
 
 export function Resume() {
 
-  const [totalByCategory, setTotalByCategory] = useState<CategoryData[]>([])
+  const [totalByCategories, setTotalByCategories] = useState<CategoryData[]>([])
 
   async function loadData() {
     const dataKey = '@gofinances:transactions';
@@ -54,7 +57,7 @@ export function Resume() {
 
       })
       if (categorySum > 0) {
-        const total = categorySum.toLocaleString('pt-BR', {
+        const totalFormatted = categorySum.toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL'
         });
@@ -65,13 +68,14 @@ export function Resume() {
           key: category.key,
           name: category.name,
           color: category.color,
-          total,
+          total: categorySum,
+          totalFormatted,
           percent,
           percentFormatted
         })
       }
     })
-    setTotalByCategory(totalByCategory)
+    setTotalByCategories(totalByCategory)
   }
 
   useEffect(() => {
@@ -83,12 +87,19 @@ export function Resume() {
         <Title>Resumo por categoria</Title>
       </Header>
       <Content >
+        <ChartContainer>
+          <VictoryPie
+            data={totalByCategories}
+            x='name'
+            y='total'
+          />
+        </ChartContainer>
         {
-          totalByCategory.map(item => (
+          totalByCategories.map(item => (
             <HistoryCard
               key={item.key}
               title={item.name}
-              amount={item.total}
+              amount={item.totalFormatted}
               color={item.color}
             />
           ))
