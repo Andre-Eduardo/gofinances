@@ -13,11 +13,11 @@ import {
   FooterWrapper
 } from './styles';
 import { SignInSocialButton } from '../../components/SignInSocialButton';
-import { AuthContext } from '../../AuthContext';
+
 
 export function SignIn() {
 
-  const data = useContext(AuthContext);
+
   return (
     <Container>
       <Header>
