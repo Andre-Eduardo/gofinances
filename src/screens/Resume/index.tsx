@@ -9,7 +9,11 @@ import {
   Header,
   Title,
   Content,
-  ChartContainer
+  ChartContainer,
+  MonthSelector,
+  MonthSelectorButton,
+  MonthSelectorIcon,
+  Month
 } from "./styles";
 import { RFValue } from "react-native-responsive-fontsize";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
@@ -96,6 +100,18 @@ export function Resume() {
           paddingBottom: useBottomTabBarHeight()
         }}
       >
+
+        <MonthSelector>
+          <MonthSelectorButton>
+            <MonthSelectorIcon name='chevron-left' />
+          </MonthSelectorButton>
+
+          <Month>Maio</Month>
+
+          <MonthSelectorButton>
+            <MonthSelectorIcon name='chevron-right' />
+          </MonthSelectorButton>
+        </MonthSelector>
         <ChartContainer>
           <VictoryPie
             data={totalByCategories}
