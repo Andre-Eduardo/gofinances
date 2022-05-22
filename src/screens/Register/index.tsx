@@ -49,7 +49,7 @@ export function Register() {
 
   const navigation = useNavigation()
 
-  const dataKey = '@gofinances:transactions';
+
 
   function handleTransactionsTypesSelect(type: 'positive' | 'negative') {
     setTransactionType(type)
@@ -82,6 +82,7 @@ export function Register() {
     }
 
     try {
+      const dataKey = '@gofinances:transactions';
       const data = await AsyncStorage.getItem(dataKey)
       const currentData = data ? JSON.parse(data) : []
 
