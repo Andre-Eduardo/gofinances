@@ -17,7 +17,8 @@ import {
 } from "./styles";
 import { RFValue } from "react-native-responsive-fontsize";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
-
+import { addMonths, subMonths, format } from "date-fns";
+import { ptBr } from 'date-fns/locale'
 interface TransactionData {
 
   type: 'positive' | 'negative'
@@ -38,7 +39,7 @@ interface CategoryData {
 }
 
 export function Resume() {
-
+  const [selectedDate, setSelectedDate] = useState(new Date())
   const [totalByCategories, setTotalByCategories] = useState<CategoryData[]>([])
   const theme = useTheme();
   async function loadData() {
@@ -46,7 +47,12 @@ export function Resume() {
     const response = await AsyncStorage.getItem(dataKey)
     const responseFormatted = response ? JSON.parse(response) : []
 
-    const expensives = responseFormatted.filter((expensive: TransactionData) => expensive.type === 'negative')
+    const expensives = responseFormatted
+      .filter((expensive: TransactionData) =>
+        expensive.type === 'negative' &&
+        new Date(expensive.date).getMonth() === selectedDate.getMonth() &&
+        new Date(expensive.date).getFullYear() === selectedDate.getFullYear()
+      )
 
     const expensivesTotal = expensives
       .reduce((accumulator: number, expensive: TransactionData) => {
@@ -85,9 +91,17 @@ export function Resume() {
     setTotalByCategories(totalByCategory)
   }
 
+  function handleDateChange(action: 'next' | 'prev') {
+    if (action === 'next') {
+      setSelectedDate(addMonths(selectedDate, 1))
+    } else {
+      setSelectedDate(subMonths(selectedDate, 1))
+    }
+  }
+
   useEffect(() => {
     loadData()
-  }, [])
+  }, [selectedDate])
   return (
     <Container>
       <Header>
@@ -102,13 +116,15 @@ export function Resume() {
       >
 
         <MonthSelector>
-          <MonthSelectorButton>
+          <MonthSelectorButton onPress={() => handleDateChange('prev')}>
             <MonthSelectorIcon name='chevron-left' />
           </MonthSelectorButton>
 
-          <Month>Maio</Month>
+          <Month>
+            {format(selectedDate, 'MMMM, yyyy', { locale: ptBr })}
+          </Month>
 
-          <MonthSelectorButton>
+          <MonthSelectorButton onPress={() => handleDateChange('next')}>
             <MonthSelectorIcon name='chevron-right' />
           </MonthSelectorButton>
         </MonthSelector>
