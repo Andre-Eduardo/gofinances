@@ -14,6 +14,7 @@ import {
 import theme from './src/global/styles/theme'
 import { StatusBar } from 'expo-status-bar';
 import { AppRoutes } from './src/routes/app.routes';
+import { SignIn } from './src/screens/SignIn';
 
 
 export default function App() {
@@ -31,7 +32,7 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <StatusBar style='light' />
       <NavigationContainer>
-        <AppRoutes />
+        <SignIn />
       </NavigationContainer>
     </ThemeProvider>
   );
