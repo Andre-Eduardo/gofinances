@@ -13,11 +13,24 @@ import {
   FooterWrapper
 } from './styles';
 import { SignInSocialButton } from '../../components/SignInSocialButton';
+import { useAuth } from '../../hooks/auth';
+import { Alert } from 'react-native';
+import BtTeste from '../../components/teste';
 
 
 export function SignIn() {
 
 
+
+  // async function handleSignInWithGoogle() {
+  //   try {
+  //     await signInWithGoogle();
+  //   } catch (error) {
+  //     console.log(error)
+  //     Alert.alert("Nao foi possível conectar com a conta Google")
+  //   }
+
+  // }
   return (
     <Container>
       <Header>
@@ -39,10 +52,12 @@ export function SignIn() {
       </Header>
       <Footer>
         <FooterWrapper>
-          <SignInSocialButton
+          {/* <SignInSocialButton
             title='Entrar com Google'
             svg={GoogleSvg}
-          />
+            onPress={handleSignInWithGoogle}
+          /> */}
+          <BtTeste />
           <SignInSocialButton
             title='Entrar com Apple'
             svg={AppleSvg}
