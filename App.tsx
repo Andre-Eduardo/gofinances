@@ -2,7 +2,7 @@ import 'react-native-gesture-handler'
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
 
-import { NavigationContainer } from '@react-navigation/native'
+
 
 import AppLoading from 'expo-app-loading'
 import {
@@ -15,6 +15,9 @@ import theme from './src/global/styles/theme'
 import { StatusBar } from 'expo-status-bar';
 import { AppRoutes } from './src/routes/app.routes';
 import { SignIn } from './src/screens/SignIn';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { AuthProvider } from './src/hooks/auth';
+import { Routes } from './src/routes';
 
 
 
@@ -33,11 +36,11 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <StatusBar style='light' />
-      <NavigationContainer>
-
-        <SignIn />
-
-      </NavigationContainer>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <AuthProvider>
+          <Routes />
+        </AuthProvider>
+      </GestureHandlerRootView>
     </ThemeProvider>
   );
 }

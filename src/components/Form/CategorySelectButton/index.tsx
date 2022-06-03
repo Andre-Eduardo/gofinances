@@ -1,23 +1,27 @@
-import React from 'react';
+import React from 'react'
 import {
   Container,
   Category,
-  Icon
+  Icon,
+  CategorySelected,
+  IconFeather
+} from './styles'
+import { RectButtonProps } from 'react-native-gesture-handler'
 
-} from './styles';
-
-interface Props {
-  title: string;
-  onPress: () => void;
+interface Props extends RectButtonProps {
+  title: string
+  icon: string | null
+  onPress: () => void
 }
-export function CategorySelectButton({ title, onPress }: Props) {
 
+export function CategorySelectButton({ title, icon, onPress, ...rest }: Props) {
   return (
-    <Container onPress={onPress}>
-      <Category >
-        {title}
-      </Category>
-      <Icon name='chevron-down' />
+    <Container onPress={onPress} {...rest}>
+      <CategorySelected>
+        {icon && <IconFeather name={icon} />}
+        <Category>{title}</Category>
+      </CategorySelected>
+      <Icon name={'keyboard-arrow-down'} />
     </Container>
   )
 }
